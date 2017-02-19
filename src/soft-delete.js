@@ -22,7 +22,7 @@ export default (Model, { deletedAt = 'deletedAt', scrub = false }) => {
   Model.defineProperty(deletedAt, {type: Date, required: false});
 
   Model.destroyAll = function softDestroyAll(where, cb) {
-    return Model.updateAll(where, { ...scrubbed, [deletedAt]: new Date() })
+    Model.updateAll(where, { ...scrubbed, [deletedAt]: new Date() })
       .then(result => (typeof cb === 'function') ? cb(null, result) : result)
       .catch(error => (typeof cb === 'function') ? cb(error) : Promise.reject(error));
   };
@@ -31,7 +31,7 @@ export default (Model, { deletedAt = 'deletedAt', scrub = false }) => {
   Model.deleteAll = Model.destroyAll;
 
   Model.destroyById = function softDestroyById(id, cb) {
-    return Model.updateAll({ [idName]: id }, { ...scrubbed, [deletedAt]: new Date()})
+    Model.updateAll({ [idName]: id }, { ...scrubbed, [deletedAt]: new Date()})
       .then(result => (typeof cb === 'function') ? cb(null, result) : result)
       .catch(error => (typeof cb === 'function') ? cb(error) : Promise.reject(error));
   };
